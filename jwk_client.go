@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-errors/errors"
 	"gopkg.in/square/go-jose.v2"
+	"gopkg.in/square/go-jose.v2/jwt"
 )
 
 var (
@@ -79,12 +80,7 @@ func (j *JWKClient) downloadKeys() error {
 	return nil
 }
 
-func (j *JWKClient) GetSecret(req *http.Request) (interface{}, error) {
-	t, err := FromHeader(req)
-
-	if err != nil {
-		return nil, err
-	}
+func (j *JWKClient) GetSecret(t *jwt.JSONWebToken) (interface{}, error) {
 
 	if len(t.Headers) < 1 {
 		return nil, ErrInvalidTokenHeader
